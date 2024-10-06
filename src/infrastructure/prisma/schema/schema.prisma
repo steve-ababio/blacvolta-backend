@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["relationJoins"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL") // uses connection pooling
+  // directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+model AdminUser {
+  id       String  @id @default(cuid())
+  username String  @unique
+  password String
+}
+
+model Event {
+  Id            String     @id @default(cuid())
+  Email       String?  @unique
+  Organizationname String?
+  Phonenumber String?
+  EventName      String
+  EventDate      String
+  EventTime      String
+  Venue          String
+  TicketLinks    String
+  SocialLinks    String
+  Description    String
+  InquiryNumber  String
+  FlyerImagePath String
+  IsEventWeekly  Boolean
+  DayofWeek      String
+  EventId String?
+  approved       Boolean
+  paid           Boolean
+}
+
+model Paragraph{
+  id String     @id @unique @default(cuid())
+  body String
+  position Int
+  instagrampostlink String
+  imagepath String
+  blog  BlogPost @relation(fields: [blogID], references: [id],onUpdate: Cascade,onDelete: Cascade)
+  blogID Int
+}
+model BlogPost{
+  id Int     @id @unique @default(autoincrement())
+  author String
+  title String
+  date String
+  imagepath String
+  dettydecember Boolean
+  approved Boolean
+  paragraph Paragraph[]
+}
